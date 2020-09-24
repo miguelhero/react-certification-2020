@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -13,6 +13,7 @@ import {
   Search as SearchIcon,
 } from '@material-ui/icons/';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import SideMenu from '../SideMenu';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -66,6 +67,7 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
+  const [openSideMenu, setOpenSideMenu] = useState(false);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -96,7 +98,12 @@ const Header = () => {
       <AppBar position="static" className={classes.container}>
         <div>
           <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="open drawer">
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpenSideMenu(!openSideMenu)}
+            >
               <MenuIcon />
             </IconButton>
             <div className={classes.search}>
@@ -126,6 +133,7 @@ const Header = () => {
         </IconButton>
       </AppBar>
       {renderMenu}
+      <SideMenu open={openSideMenu} setOpen={setOpenSideMenu} />
     </>
   );
 };
