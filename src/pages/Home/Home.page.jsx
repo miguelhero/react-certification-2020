@@ -1,38 +1,44 @@
-import React, { useRef } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-
-import { useAuth } from '../../providers/Auth';
-import './Home.styles.css';
+import React, { useEffect, useState } from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import VideoCard from '../../components/VideoCard';
+import youtube from '../../services/youtube';
 
 function HomePage() {
-  const history = useHistory();
-  const sectionRef = useRef(null);
-  const { authenticated, logout } = useAuth();
+  const [videos, setVideos] = useState([]);
 
-  function deAuthenticate(event) {
-    event.preventDefault();
-    logout();
-    history.push('/');
-  }
+  useEffect(() => {
+    const getVideos = async () => {
+      const data = await youtube.get('search', {
+        params: {
+          q: '',
+        },
+      });
+      setVideos(data.data.items || []);
+    };
+    getVideos();
+  }, []);
 
   return (
-    <section className="homepage" ref={sectionRef}>
-      <h1>Hello stranger!</h1>
-      {authenticated ? (
-        <>
-          <h2>Good to have you back</h2>
-          <span>
-            <Link to="/" onClick={deAuthenticate}>
-              ← logout
-            </Link>
-            <span className="separator" />
-            <Link to="/secret">show me something cool →</Link>
-          </span>
-        </>
-      ) : (
-        <Link to="/login">let me in →</Link>
-      )}
-    </section>
+    <>
+      <Typography variant="h2" align="center">
+        Welcome to Challenge!
+      </Typography>
+      <Grid container spacing={3}>
+        {videos.length === 0 ? (
+          <h2>No videos found!</h2>
+        ) : (
+          videos.map((item) => (
+            <VideoCard
+              key={item.id.videoId}
+              imageSrc={item.snippet.thumbnails.high.url}
+              altText={item.snippet.title}
+              videoTitle={item.snippet.title}
+              videoDesc={item.snippet.description}
+            />
+          ))
+        )}
+      </Grid>
+    </>
   );
 }
 
