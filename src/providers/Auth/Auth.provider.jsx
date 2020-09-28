@@ -1,44 +1,49 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { createContext, useReducer, useContext } from 'react';
 
-import { AUTH_STORAGE_KEY } from '../../utils/constants';
 import { storage } from '../../utils/storage';
 
-const AuthContext = React.createContext(null);
+const AuthContext = createContext();
 
-function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error(`Can't use "useAuth" without an AuthProvider!`);
+const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+let initialState = {
+  isAuthenticated: false,
+  token: null,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      storage.set('token', action.payload.token);
+      return {
+        ...state,
+        isAuthenticated: true,
+        token: action.payload.token,
+      };
+    case 'LOGOUT':
+      storage.clear();
+      return {
+        ...state,
+        isAuthenticated: false,
+        token: null,
+      };
+    default:
+      return state;
   }
-  return context;
-}
+};
 
-function AuthProvider({ children }) {
-  const [authenticated, setAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const lastAuthState = storage.get(AUTH_STORAGE_KEY);
-    const isAuthenticated = Boolean(lastAuthState);
-
-    setAuthenticated(isAuthenticated);
-  }, []);
-
-  const login = useCallback(() => {
-    setAuthenticated(true);
-    storage.set(AUTH_STORAGE_KEY, true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setAuthenticated(false);
-    storage.set(AUTH_STORAGE_KEY, false);
-  }, []);
+const AuthProvider = ({ children }) => {
+  if (storage.get('token')) {
+    initialState = { isAuthenticated: true, token: storage.get('token') };
+  }
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <AuthContext.Provider value={{ login, logout, authenticated }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>
   );
-}
+};
 
 export { useAuth };
 export default AuthProvider;
