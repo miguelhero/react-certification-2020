@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
+import RelatedVideos from '../../components/RelatedVideos/RelatedVideos.component';
 
 const useStyles = makeStyles({
   layout: {
@@ -36,24 +29,10 @@ const useStyles = makeStyles({
   related: {
     gridArea: 'related',
   },
-  iframe: {
+  videoFrame: {
     position: 'relative',
     width: '100%',
     height: '100%',
-  },
-  relatedCard: {
-    display: 'flex',
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  videoThumbnail: {
-    width: 151,
-    height: 90,
   },
 });
 
@@ -65,7 +44,7 @@ const VideoPage = () => {
       <div className={classes.videoDisplay}>
         <iframe
           title={`video-${videoId}`}
-          className={classes.iframe}
+          className={classes.videoFrame}
           src={`https://www.youtube.com/embed/${videoId}`}
           scrolling="no"
           frameBorder="no"
@@ -82,26 +61,7 @@ const VideoPage = () => {
         </Button>
       </div>
       <div className={classes.related}>
-        <Typography variant="h5" component="h5" align="center">
-          Related Videos
-        </Typography>
-        <Card>
-          <CardActionArea className={classes.relatedCard}>
-            <CardMedia
-              className={classes.videoThumbnail}
-              image="https://i.ytimg.com/vi/hwLo7aU1Aas/default.jpg"
-              title="altText"
-            />
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                Video Title
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                Description
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+        <RelatedVideos videoId={videoId} />
       </div>
     </div>
   );
