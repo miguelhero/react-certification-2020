@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import VideoCard from '../../components/VideoCard';
+import { favoritesDb } from '../../data/favorites';
 
 function FavoritesPage() {
-  const [videos] = useState([]);
+  const [videos] = useState(favoritesDb.wizeline);
 
   return (
     <>

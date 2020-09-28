@@ -3,6 +3,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import RelatedVideos from '../../components/RelatedVideos/RelatedVideos.component';
 import { useAuth } from '../../providers/Auth';
+import { favoritesDb } from '../../data/favorites';
 
 const useStyles = makeStyles({
   layout: {
@@ -41,6 +42,14 @@ const VideoPage = () => {
   const classes = useStyles();
   const { videoId } = useParams();
   const { state } = useAuth();
+
+  const videoInFavs = () => {
+    const username = state.token.name.toLowerCase();
+    const res = favoritesDb[username].filter((item) => item.id.videoId === videoId);
+    if (res.length > 0) return true;
+    return false;
+  };
+
   return (
     <div className={classes.layout}>
       <div className={classes.videoDisplay}>
@@ -60,7 +69,7 @@ const VideoPage = () => {
       {state.isAuthenticated && (
         <div className={classes.addFav}>
           <Button variant="contained" color="primary" component="span">
-            Add to Favorites
+            {videoInFavs ? `Remove from Favorites` : `Add to Favorites`}
           </Button>
         </div>
       )}
