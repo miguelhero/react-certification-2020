@@ -6,7 +6,9 @@ import VideosProvider from '../../providers/Search';
 import AuthProvider from '../../providers/Auth';
 import VideoPage from '../../pages/VideoPage';
 import NotFound from '../../pages/NotFound';
-import LoginPage from '../../pages/Login/Login.page';
+import LoginPage from '../../pages/Login';
+import FavoritesPage from '../../pages/Favorites';
+import ProtectedRoute from '../ProtectedRoute';
 
 const App = () => {
   return (
@@ -21,6 +23,9 @@ const App = () => {
             <Route exact path="/login">
               <LoginPage />
             </Route>
+            <ProtectedRoute exact path="/favorites">
+              <FavoritesPage />
+            </ProtectedRoute>
             <Route exact path="/watch/:videoId">
               <VideoPage />
             </Route>
