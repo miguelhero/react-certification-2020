@@ -32,6 +32,7 @@ function HomePage() {
           videos.map((item) => (
             <VideoCard
               key={item.id.videoId}
+              videoId={item.id.videoId}
               imageSrc={item.snippet.thumbnails.high.url}
               altText={item.snippet.title}
               videoTitle={item.snippet.title}
