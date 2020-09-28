@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import RelatedVideos from '../../components/RelatedVideos/RelatedVideos.component';
+import { useAuth } from '../../providers/Auth';
 
 const useStyles = makeStyles({
   layout: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles({
 const VideoPage = () => {
   const classes = useStyles();
   const { videoId } = useParams();
+  const { state } = useAuth();
   return (
     <div className={classes.layout}>
       <div className={classes.videoDisplay}>
@@ -55,11 +57,13 @@ const VideoPage = () => {
           Video Title
         </Typography>
       </div>
-      <div className={classes.addFav}>
-        <Button variant="contained" color="primary" component="span">
-          Add to Favorites
-        </Button>
-      </div>
+      {state.isAuthenticated && (
+        <div className={classes.addFav}>
+          <Button variant="contained" color="primary" component="span">
+            Add to Favorites
+          </Button>
+        </div>
+      )}
       <div className={classes.related}>
         <RelatedVideos videoId={videoId} />
       </div>
