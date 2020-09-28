@@ -2,21 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import VideoCard from '../../components/VideoCard';
 import youtube from '../../services/youtube';
+import { useSearch } from '../../providers/Search';
 
 function HomePage() {
   const [videos, setVideos] = useState([]);
+  const [query] = useSearch();
 
   useEffect(() => {
     const getVideos = async () => {
       const data = await youtube.get('search', {
         params: {
-          q: '',
+          q: query,
         },
       });
       setVideos(data.data.items || []);
     };
     getVideos();
-  }, []);
+  }, [query]);
 
   return (
     <>

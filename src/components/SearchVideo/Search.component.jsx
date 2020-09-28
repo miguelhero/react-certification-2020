@@ -1,23 +1,15 @@
 import React, { useState } from 'react';
 import { Input, InputAdornment } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
-import youtube from '../../services/youtube';
+import { useSearch } from '../../providers/Search';
 
 const SearchVideo = () => {
   const [searchValue, setSearchValue] = useState('');
-
-  const getVideos = async () => {
-    const response = await youtube.get('search', {
-      params: {
-        q: searchValue,
-      },
-    });
-    return response.data.items;
-  };
+  const [, setSearchQuery] = useSearch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getVideos();
+    setSearchQuery(searchValue);
   };
 
   return (
