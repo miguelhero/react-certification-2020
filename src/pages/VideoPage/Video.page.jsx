@@ -50,7 +50,8 @@ const VideoPage = () => {
   const { state, dispatch } = useAuth();
   const [videoInfo, setVideoInfo] = useState(null);
   const [isFav, setIsFav] = useState(
-    !!state.favorites.find((item) => item.id.videoId !== videoId)
+    (state.favorites && !!state.favorites.find((item) => item.id.videoId === videoId)) ||
+      false
   );
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const VideoPage = () => {
       setVideoInfo(data.data.items[0] || []);
     };
     getVideos();
-    setIsFav(!!state.favorites.find((item) => item.id.videoId !== videoId));
+    setIsFav(!!state.favorites.find((item) => item.id.videoId === videoId));
   }, [videoId]);
 
   const handleFavorites = () => {
@@ -100,20 +101,20 @@ const VideoPage = () => {
           {isFav ? (
             <Button
               variant="contained"
-              color="secondary"
-              component="span"
-              onClick={handleFavorites}
-            >
-              + to Favorites
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
               color="primary"
               component="span"
               onClick={handleFavorites}
             >
               - from Favorites
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="secondary"
+              component="span"
+              onClick={handleFavorites}
+            >
+              + to Favorites
             </Button>
           )}
         </div>

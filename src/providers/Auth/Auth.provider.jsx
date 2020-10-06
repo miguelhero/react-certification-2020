@@ -12,7 +12,7 @@ const useAuth = () => {
 let initialState = {
   isAuthenticated: false,
   token: null,
-  favorites: null,
+  favorites: [],
 };
 
 const reducer = (state, action) => {

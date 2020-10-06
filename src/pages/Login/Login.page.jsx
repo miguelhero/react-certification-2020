@@ -58,7 +58,6 @@ function LoginPage() {
     });
     loginApi(data.username, data.password)
       .then((resJson) => {
-        console.log('response', resJson);
         dispatch({
           type: 'LOGIN',
           payload: resJson,
@@ -66,7 +65,6 @@ function LoginPage() {
         history.push('/');
       })
       .catch((error) => {
-        console.log('error', error);
         setData({
           ...data,
           isSubmitting: false,
