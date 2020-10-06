@@ -25,7 +25,7 @@ const SideMenu = ({ open, setOpen }) => {
   return (
     <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
       <div className={classes.list}>
-        <List>
+        <List onClick={() => setOpen(false)}>
           <Link to="/" className={classes.nounderline}>
             <ListItem button>
               <ListItemText primary="Home" />
@@ -34,7 +34,7 @@ const SideMenu = ({ open, setOpen }) => {
         </List>
         <Divider />
         {state.isAuthenticated && (
-          <List>
+          <List onClick={() => setOpen(false)}>
             <Link to="/favorites" className={classes.nounderline}>
               <ListItem button>
                 <ListItemText primary="My Favorites" />

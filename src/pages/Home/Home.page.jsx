@@ -27,22 +27,24 @@ const HomePage = () => {
           Final Challenge Delivery!
         </Typography>
       </Box>
-      <Grid container spacing={3}>
-        {videos.length === 0 ? (
-          <h2>No videos found!</h2>
-        ) : (
-          videos.map((item) => (
-            <VideoCard
-              key={item.id.videoId}
-              videoId={item.id.videoId}
-              imageSrc={item.snippet.thumbnails.high.url}
-              altText={item.snippet.title}
-              videoTitle={item.snippet.title}
-              videoDesc={item.snippet.description}
-            />
-          ))
-        )}
-      </Grid>
+      <Box m="2rem">
+        <Grid container spacing={3}>
+          {videos.length === 0 ? (
+            <h2>No videos found!</h2>
+          ) : (
+            videos.map((item) => (
+              <VideoCard
+                key={item.id.videoId}
+                videoId={item.id.videoId}
+                imageSrc={item.snippet.thumbnails.high.url}
+                altText={item.snippet.title}
+                videoTitle={item.snippet.title}
+                videoDesc={item.snippet.description}
+              />
+            ))
+          )}
+        </Grid>
+      </Box>
     </>
   );
 };

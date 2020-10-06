@@ -49,7 +49,7 @@ const theme = createMuiTheme({
       main: '#E63946',
     },
     secondary: {
-      main: '#F1FAEE',
+      main: '#1565C0',
     },
     error: {
       main: red.A400,
@@ -85,7 +85,7 @@ const theme = createMuiTheme({
     MuiButtonBase: {
       root: {
         '&:hover': {
-          backgroundColor: 'rgba(0, 59, 128, 0.04)',
+          backgroundColor: 'rgba(0, 59, 128, 0.08)',
         },
       },
     },

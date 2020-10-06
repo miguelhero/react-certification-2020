@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, createStyles, makeStyles, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import RelatedVideos from '../../components/RelatedVideos/RelatedVideos.component';
 import { useAuth } from '../../providers/Auth';
-import { favoritesDb } from '../../data/favorites';
+import youtube from '../../services/youtube';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -47,13 +47,36 @@ const useStyles = makeStyles((theme) =>
 const VideoPage = () => {
   const classes = useStyles();
   const { videoId } = useParams();
-  const { state } = useAuth();
+  const { state, dispatch } = useAuth();
+  const [videoInfo, setVideoInfo] = useState(null);
+  const [isFav, setIsFav] = useState(
+    !!state.favorites.find((item) => item.id.videoId !== videoId)
+  );
 
-  const videoInFavs = () => {
-    const username = state.token.name.toLowerCase();
-    const res = favoritesDb[username].filter((item) => item.id.videoId === videoId);
-    if (res.length > 0) return true;
-    return false;
+  useEffect(() => {
+    const getVideos = async () => {
+      const data = await youtube.get('videos', {
+        params: {
+          id: videoId,
+          maxResults: 1,
+        },
+      });
+      setVideoInfo(data.data.items[0] || []);
+    };
+    getVideos();
+    setIsFav(!!state.favorites.find((item) => item.id.videoId !== videoId));
+  }, [videoId]);
+
+  const handleFavorites = () => {
+    if (isFav) {
+      dispatch({ type: 'REMOVEFROMFAV', payload: { videoId } });
+    } else {
+      dispatch({
+        type: 'ADDTOFAV',
+        payload: { ...videoInfo, id: { videoId: videoInfo.id } },
+      });
+    }
+    setIsFav(!isFav);
   };
 
   return (
@@ -69,14 +92,30 @@ const VideoPage = () => {
       </div>
       <div className={classes.title}>
         <Typography variant="h3" component="h3">
-          Video Title
+          {videoInfo && videoInfo.snippet.title}
         </Typography>
       </div>
       {state.isAuthenticated && (
         <div className={classes.addFav}>
-          <Button variant="contained" color="primary" component="span">
-            {videoInFavs ? `Remove from Favorites` : `Add to Favorites`}
-          </Button>
+          {isFav ? (
+            <Button
+              variant="contained"
+              color="secondary"
+              component="span"
+              onClick={handleFavorites}
+            >
+              + to Favorites
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleFavorites}
+            >
+              - from Favorites
+            </Button>
+          )}
         </div>
       )}
       <div className={classes.related}>
