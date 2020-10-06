@@ -10,6 +10,11 @@ const useStyles = makeStyles({
   },
   fullList: {
     width: 'auto',
+    backgroundColor: '#f5f6f7',
+  },
+  nounderline: {
+    textDecoration: 'none',
+    color: 'rgba(0, 0, 0, 0.8)',
   },
 });
 
@@ -21,7 +26,7 @@ const SideMenu = ({ open, setOpen }) => {
     <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
       <div className={classes.list}>
         <List>
-          <Link to="/">
+          <Link to="/" className={classes.nounderline}>
             <ListItem button>
               <ListItemText primary="Home" />
             </ListItem>
@@ -30,7 +35,7 @@ const SideMenu = ({ open, setOpen }) => {
         <Divider />
         {state.isAuthenticated && (
           <List>
-            <Link to="/favorites">
+            <Link to="/favorites" className={classes.nounderline}>
               <ListItem button>
                 <ListItemText primary="My Favorites" />
               </ListItem>

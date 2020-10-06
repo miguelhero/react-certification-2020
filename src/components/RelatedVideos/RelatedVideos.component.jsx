@@ -1,10 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, makeStyles, createStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import ThumbnailCard from '../ThumbnailCard/ThumbnailCard.component';
 import youtube from '../../services/youtube';
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    divider: {
+      paddingBottom: theme.spacing(1),
+      borderBottom: '2px solid',
+      borderBottomColor: 'rgba(0, 0, 0, 0.24)',
+      marginBottom: theme.spacing(1),
+    },
+    nounderline: {
+      textDecoration: 'none',
+      color: 'rgba(0, 0, 0, 0.8)',
+    },
+  })
+);
+
 const RelatedVideos = ({ videoId }) => {
+  const classes = useStyles();
   const [relatedVideos, setRelatedVideos] = useState([]);
 
   useEffect(() => {
@@ -22,11 +38,15 @@ const RelatedVideos = ({ videoId }) => {
 
   return (
     <>
-      <Typography variant="h5" component="h5" align="center">
+      <Typography variant="h3" component="h3" align="center" className={classes.divider}>
         Related Videos
       </Typography>
       {relatedVideos.map((relatedVideo) => (
-        <Link to={`/watch/${relatedVideo.id.videoId}`} key={relatedVideo.id.videoId}>
+        <Link
+          to={`/watch/${relatedVideo.id.videoId}`}
+          key={relatedVideo.id.videoId}
+          className={classes.nounderline}
+        >
           <ThumbnailCard
             image={relatedVideo.snippet.thumbnails.default.url}
             imageAltText={relatedVideo.snippet.title}

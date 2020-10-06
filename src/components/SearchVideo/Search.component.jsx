@@ -15,6 +15,7 @@ const SearchVideo = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Input
+        style={{ color: 'white' }}
         type="text"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}

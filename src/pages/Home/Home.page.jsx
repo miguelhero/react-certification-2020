@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import VideoCard from '../../components/VideoCard';
 import youtube from '../../services/youtube';
 import { useSearch } from '../../providers/Search';
 
-function HomePage() {
+const HomePage = () => {
   const [videos, setVideos] = useState([]);
   const [query] = useSearch();
 
@@ -22,9 +22,11 @@ function HomePage() {
 
   return (
     <>
-      <Typography variant="h2" align="center">
-        Welcome to Challenge!
-      </Typography>
+      <Box my="2rem">
+        <Typography variant="h2" align="center">
+          Final Challenge Delivery!
+        </Typography>
+      </Box>
       <Grid container spacing={3}>
         {videos.length === 0 ? (
           <h2>No videos found!</h2>
@@ -43,6 +45,6 @@ function HomePage() {
       </Grid>
     </>
   );
-}
+};
 
 export default HomePage;

@@ -4,33 +4,37 @@ import {
   CardActionArea,
   CardMedia,
   CardContent,
-  makeStyles,
   Typography,
+  makeStyles,
+  createStyles,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  content: {
-    flex: '1 0 auto',
-  },
-  videoThumbnail: {
-    width: 151,
-    height: 90,
-  },
-  relatedCard: {
-    display: 'flex',
-  },
-  truncateLongText: {
-    width: 250,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-});
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    content: {
+      flex: '1 0 auto',
+    },
+    videoThumbnail: {
+      width: 151,
+      height: 90,
+    },
+    relatedCard: {
+      display: 'flex',
+      marginBottom: theme.spacing(1),
+    },
+    truncateLongText: {
+      width: 250,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+  })
+);
 
 const ThumbnailCard = ({ image, imageAltText, title, description }) => {
   const classes = useStyles();
   return (
-    <Card>
+    <Card square>
       <CardActionArea className={classes.relatedCard}>
         <CardMedia
           className={classes.videoThumbnail}
@@ -38,11 +42,11 @@ const ThumbnailCard = ({ image, imageAltText, title, description }) => {
           title={imageAltText}
         />
         <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5" className={classes.truncateLongText}>
+          <Typography component="h6" variant="h6" className={classes.truncateLongText}>
             {title}
           </Typography>
           <Typography
-            variant="subtitle1"
+            variant="body2"
             color="textSecondary"
             className={classes.truncateLongText}
           >
