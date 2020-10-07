@@ -9,8 +9,9 @@ import {
   makeStyles,
   createStyles,
 } from '@material-ui/core';
-import { useAuth } from '../../providers/Auth';
+import { useAuth, STATE } from '../../providers/Auth';
 import loginApi from '../../services/login.api';
+import { storage } from '../../utils/storage';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -62,6 +63,7 @@ function LoginPage() {
           type: 'LOGIN',
           payload: resJson,
         });
+        storage.set(STATE, { isAuthenticated: true, favorites: [], ...resJson });
         history.push('/');
       })
       .catch((error) => {

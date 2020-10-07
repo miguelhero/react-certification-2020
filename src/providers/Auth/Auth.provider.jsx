@@ -1,7 +1,8 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
 import { storage } from '../../utils/storage';
-import { favoritesDb } from '../../data/favorites';
+
+const STATE = 'user';
 
 const AuthContext = createContext();
 
@@ -9,7 +10,7 @@ const useAuth = () => {
   return useContext(AuthContext);
 };
 
-let initialState = {
+const initialState = {
   isAuthenticated: false,
   token: null,
   favorites: [],
@@ -18,14 +19,12 @@ let initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
-      storage.set('token', action.payload.token);
       return {
         ...state,
         isAuthenticated: true,
         token: action.payload.token,
       };
     case 'LOGOUT':
-      storage.clear();
       return {
         ...state,
         isAuthenticated: false,
@@ -49,19 +48,12 @@ const reducer = (state, action) => {
 };
 
 const AuthProvider = ({ children }) => {
-  if (storage.get('token')) {
-    initialState = {
-      isAuthenticated: true,
-      token: storage.get('token'),
-      favorites: favoritesDb,
-    };
-  }
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, storage.get(STATE) || initialState);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>
   );
 };
 
-export { useAuth };
+export { useAuth, STATE };
 export default AuthProvider;

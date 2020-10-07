@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, MenuItem } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../providers/Auth';
+import { storage } from '../../utils/storage';
 
 const ProfileMenu = ({ anchorEl, handleProfileMenuClose }) => {
   const { state, dispatch } = useAuth();
@@ -13,9 +14,11 @@ const ProfileMenu = ({ anchorEl, handleProfileMenuClose }) => {
         type: 'LOGOUT',
       });
       history.push('/');
+      storage.clear();
     } else {
       history.push('/login');
     }
+    handleProfileMenuClose();
   };
 
   return (

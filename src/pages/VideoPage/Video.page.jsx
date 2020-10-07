@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, createStyles, makeStyles, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import RelatedVideos from '../../components/RelatedVideos/RelatedVideos.component';
-import { useAuth } from '../../providers/Auth';
+import { useAuth, STATE } from '../../providers/Auth';
 import youtube from '../../services/youtube';
+import { storage } from '../../utils/storage';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -49,10 +50,8 @@ const VideoPage = () => {
   const { videoId } = useParams();
   const { state, dispatch } = useAuth();
   const [videoInfo, setVideoInfo] = useState(null);
-  const [isFav, setIsFav] = useState(
-    (state.favorites && !!state.favorites.find((item) => item.id.videoId === videoId)) ||
-      false
-  );
+  const isFav =
+    state.favorites && state.favorites.some((item) => item.id.videoId === videoId);
 
   useEffect(() => {
     const getVideos = async () => {
@@ -65,8 +64,8 @@ const VideoPage = () => {
       setVideoInfo(data.data.items[0] || []);
     };
     getVideos();
-    setIsFav(!!state.favorites.find((item) => item.id.videoId === videoId));
-  }, [videoId]);
+    storage.set(STATE, { ...state });
+  }, [state, videoId]);
 
   const handleFavorites = () => {
     if (isFav) {
@@ -77,7 +76,6 @@ const VideoPage = () => {
         payload: { ...videoInfo, id: { videoId: videoInfo.id } },
       });
     }
-    setIsFav(!isFav);
   };
 
   return (
