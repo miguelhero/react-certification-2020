@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  FormHelperText,
   TextField,
   Typography,
   makeStyles,
@@ -93,6 +94,9 @@ function LoginPage() {
           required
         />
         <TextField
+          inputProps={{
+            'data-testid': 'password-input',
+          }}
           className={classes.formItem}
           label="password"
           name="password"
@@ -103,7 +107,9 @@ function LoginPage() {
           fullWidth
           required
         />
-        {data.errorMessage && <h4>Incorrect username or password</h4>}
+        {data.errorMessage && (
+          <FormHelperText error>Incorrect username or password</FormHelperText>
+        )}
         <Box mt={2} textAlign="center">
           <Button
             variant="contained"

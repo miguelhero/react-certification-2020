@@ -15,7 +15,9 @@ const HomePage = () => {
           q: query,
         },
       });
-      setVideos(data.data.items || []);
+      if (data && data.data && data.data.items) {
+        setVideos(data.data.items);
+      }
     };
     getVideos();
   }, [query]);

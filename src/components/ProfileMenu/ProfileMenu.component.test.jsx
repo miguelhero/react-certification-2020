@@ -10,6 +10,7 @@ jest.mock('../../providers/Auth', () => ({
 }));
 
 const mockHistoryPush = jest.fn();
+const mockHandleProfileMenuClose = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   useHistory: () => ({
@@ -31,9 +32,10 @@ describe('Profile component logged off', () => {
   });
 
   it('go to login page when at sign in', () => {
-    render(<ProfileMenu />);
+    render(<ProfileMenu handleProfileMenuClose={mockHandleProfileMenuClose} />);
     fireEvent.click(screen.getByRole('menuitem', { hidden: true }));
     expect(mockHistoryPush).toHaveBeenCalledWith('/login');
+    expect(mockHandleProfileMenuClose).toHaveBeenCalled();
   });
 });
 
@@ -51,8 +53,9 @@ describe('Profile component logged in', () => {
   });
 
   it('go to homepage after signing out', () => {
-    render(<ProfileMenu />);
+    render(<ProfileMenu handleProfileMenuClose={mockHandleProfileMenuClose} />);
     fireEvent.click(screen.getByRole('menuitem', { hidden: true }));
     expect(mockHistoryPush).toHaveBeenCalledWith('/');
+    expect(mockHandleProfileMenuClose).toHaveBeenCalled();
   });
 });

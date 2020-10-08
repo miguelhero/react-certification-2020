@@ -34,7 +34,12 @@ const VideoCard = ({ videoId, imageSrc, altText, videoTitle, videoDesc }) => {
       <Card className={classes.card}>
         <Link to={`/watch/${videoId}`} className={classes.nounderline}>
           <CardActionArea>
-            <CardMedia className={classes.image} image={imageSrc} title={altText} />
+            <CardMedia
+              data-testid="card-media"
+              className={classes.image}
+              image={imageSrc}
+              title={altText}
+            />
             <CardContent>
               <Typography variant="h6" component="h2">
                 {videoTitle}

@@ -31,7 +31,9 @@ const RelatedVideos = ({ videoId }) => {
           maxResults: 10,
         },
       });
-      setRelatedVideos(data.data.items || []);
+      if (data && data.data && data.data.items) {
+        setRelatedVideos(data.data.items);
+      }
     };
     getVideos();
   }, [videoId]);
@@ -41,20 +43,22 @@ const RelatedVideos = ({ videoId }) => {
       <Typography variant="h3" component="h3" align="center" className={classes.divider}>
         Related Videos
       </Typography>
-      {relatedVideos.map((relatedVideo) => (
-        <Link
-          to={`/watch/${relatedVideo.id.videoId}`}
-          key={relatedVideo.id.videoId}
-          className={classes.nounderline}
-        >
-          <ThumbnailCard
-            image={relatedVideo.snippet.thumbnails.default.url}
-            imageAltText={relatedVideo.snippet.title}
-            title={relatedVideo.snippet.title}
-            description={relatedVideo.snippet.description}
-          />
-        </Link>
-      ))}
+      <div>
+        {relatedVideos.map((relatedVideo) => (
+          <Link
+            to={`/watch/${relatedVideo.id.videoId}`}
+            key={relatedVideo.id.videoId}
+            className={classes.nounderline}
+          >
+            <ThumbnailCard
+              image={relatedVideo.snippet.thumbnails.default.url}
+              imageAltText={relatedVideo.snippet.title}
+              title={relatedVideo.snippet.title}
+              description={relatedVideo.snippet.description}
+            />
+          </Link>
+        ))}
+      </div>
     </>
   );
 };

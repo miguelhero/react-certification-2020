@@ -70,4 +70,12 @@ describe('Header logged in', () => {
     fireEvent.click(screen.getByTestId('profile-menu-btn'));
     expect(screen.getByRole('menuitem')).toHaveTextContent('Sign Out');
   });
+
+  it('when clicking signout it closes the menu', () => {
+    render(<Header />, { wrapper: MemoryRouter });
+    fireEvent.click(screen.getByTestId('profile-menu-btn'));
+    expect(screen.getByRole('menuitem')).toHaveTextContent('Sign Out');
+    fireEvent.click(screen.getByRole('menuitem'));
+    expect(screen.queryByRole('menuitem')).toBeNull();
+  });
 });
